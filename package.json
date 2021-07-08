@@ -1,0 +1,33 @@
+{
+	"name": "ryst",
+	"version": "0.0.1",
+	"description": "A lightweight library for promise-based http requests with node.js",
+	"main": "src/index.ts",
+	"repository": "https://github.com/nicholas-roether/ryst.git",
+	"author": "nicholas_roether <nicholas.roether@t-online.de>",
+	"license": "MIT",
+	"private": false,
+	"files": [
+		"dist/*"
+	],
+	"scripts": {
+		"prepublish": "tsc",
+		"prestart": "tsc",
+		"test": "node dist/test.js"
+	},
+	"keywords": [
+		"node",
+		"nodejs",
+		"node.js",
+		"http",
+		"request",
+		"promise",
+		"get",
+		"post",
+		"head"
+	],
+	"bugs": {
+	"url": "https://github.com/nicholas-roether/ryst/issues"
+	},
+	"homepage": "https://github.com/nicholas-roether/ryst#readme"
+}
