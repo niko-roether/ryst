@@ -1,5 +1,6 @@
 import { ClientRequest as HttpClientRequest, ClientRequestArgs, IncomingMessage } from "http";
 import { URL } from "url";
+import { toURL } from "./utils";
 
 class RequestAbortedError extends Error {
 	public readonly request: Request;
@@ -19,13 +20,15 @@ class RequestTimeoutError extends Error {
 	}
 }
 
+export type RequestOptions = Pick<ClientRequestArgs, Exclude<keyof ClientRequestArgs, keyof URL>>;
+
 class Request extends HttpClientRequest implements Promise<IncomingMessage> {
 	private responseCallbacks: ((value: IncomingMessage) => unknown)[] = [];
 	private errorCallbacks: ((value: Error) => unknown)[] = [];
 	private finallyCallbacks: (() => void)[] = [];
 
-	constructor(url: string | URL | ClientRequestArgs, cb?: ((res: IncomingMessage) => void) | undefined) {
-		super(url, cb);
+	constructor(url: string | URL, options: RequestOptions, cb?: ((res: IncomingMessage) => void) | undefined) {
+		super({...toURL(url), ...options}, cb);
 		const onFinally = () => this.finallyCallbacks.forEach(cb => cb());
 		this.on("response", response => {
 			this.responseCallbacks.forEach(cb => cb(response));
@@ -77,4 +80,11 @@ class Request extends HttpClientRequest implements Promise<IncomingMessage> {
 	}
 
 	[Symbol.toStringTag] = "RystRequest";
+}
+
+export default Request;
+
+export {
+	RequestAbortedError,
+	RequestTimeoutError
 }
