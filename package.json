@@ -27,7 +27,11 @@
 		"head"
 	],
 	"bugs": {
-	"url": "https://github.com/nicholas-roether/ryst/issues"
+		"url": "https://github.com/nicholas-roether/ryst/issues"
 	},
-	"homepage": "https://github.com/nicholas-roether/ryst#readme"
+	"homepage": "https://github.com/nicholas-roether/ryst#readme",
+	"devDependencies": {
+		"@types/node": "^16.0.1",
+		"typescript": "^4.3.5"
+	}
 }
