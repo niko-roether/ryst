@@ -25,7 +25,7 @@ class RequestTimeoutError extends Error {
 
 
 export interface RequestOptions extends Pick<ClientRequestArgs, Exclude<keyof ClientRequestArgs | "auth" | "hash" | "_defaultAgent", keyof URL>> {
-	data?: string | Buffer;
+	data?: {[key: string]: any} | string | Buffer;
 	encoding?: BufferEncoding;
 	dataWriteCallback?: (err: Error | null | undefined) => void;
 }
@@ -71,7 +71,10 @@ class Request extends HttpClientRequest implements Promise<Response> {
 			cb?.(res);
 		});
 		if(options?.data !== undefined) {
-			this.write(options.data, options.encoding ?? "utf-8", options.dataWriteCallback);
+			let data = options.data;
+			if(typeof data !== "string" && !(data instanceof Buffer))
+				data = JSON.stringify(data);
+			this.write(data, options.encoding ?? "utf-8", options.dataWriteCallback);
 		}
 		const onFinally = () => this.finallyCallbacks.forEach(cb => cb());
 		this.on("abort", () => {
