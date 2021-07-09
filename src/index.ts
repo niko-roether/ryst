@@ -6,7 +6,7 @@ export type RequestOptionsWithoutMethod = Omit<RequestOptions, "method">;
 
 
 function request(url: string | URL, options: RequestOptions, cb?: ((res: IncomingMessage) => void) | undefined) {
-	return new Request(url, options, cb);
+	return new Request(url, {method: "GET", ...options}, cb);
 }
 
 function get(url: string | URL, options?: RequestOptionsWithoutMethod, cb?: ((res: IncomingMessage) => void) | undefined) {
