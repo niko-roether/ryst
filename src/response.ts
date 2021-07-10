@@ -1,11 +1,11 @@
 import { IncomingMessage } from "http";
 
 class Response {
-	public readonly response: IncomingMessage;
+	public readonly message: IncomingMessage;
 	public readonly data?: string | Buffer;
 
 	constructor(response: IncomingMessage, data?: string | Buffer) {
-		this.response = response;
+		this.message = response;
 		this.data = data?.toString();
 	}
 }
