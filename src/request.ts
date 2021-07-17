@@ -4,29 +4,50 @@ import { URL } from "url";
 import Response from "./response";
 import { toURL } from "./utils";
 
+/** An error that occurs when a request was aborted by the client. */
 class RequestAbortedError extends Error {
+	/** The request that was aborted. */
 	public readonly request: Request;
 
+	/**
+	 * @param request The request that was aborted.
+	 */
 	constructor(request: Request) {
 		super(`The ${request.method} request for ${request.host}/${request.path} was aborted by the client.`);
 		this.request = request;
 	}
 };
 
+/** An error that occurs when a request times out. */
 class RequestTimeoutError extends Error {
+	/** The request that timed out. */
 	public readonly request: Request;
 
+	/**
+	 * @param request The request that timed out.
+	 */
 	constructor(request: Request) {
 		super(`The ${request.method} request for ${request.host}/${request.path} timed out.`);
 		this.request = request;
 	}
 }
 
-
-
+/** Options for a http request. */
 export interface RequestOptions extends Pick<ClientRequestArgs, Exclude<keyof ClientRequestArgs | "auth" | "hash" | "_defaultAgent", keyof URL>> {
+	/**
+	 * The data to be sent. Can be in one of these three formats:
+	 *  - An object, which will be automatically converted to json
+	 *  - A string
+	 *  - A buffer
+	 */
 	data?: {[key: string]: any} | string | Buffer;
+	/**
+	 * The text encoding in which the data is to be sent, if applicapble.
+	 * 
+	 * The default is utf-8.
+	 */
 	encoding?: BufferEncoding;
+	/** A callback called when the data is written to the request, possibly with an error as an argument. */
 	dataWriteCallback?: (err: Error | null | undefined) => void;
 }
 
@@ -49,13 +70,18 @@ function createRequestArgs(url: string | URL, options?: RequestOptions): string 
 	return args;
 }
 
-
+/** An object representing an http request. */
 class Request extends HttpClientRequest implements Promise<Response> {
 	private dataCallbacks: ((value: Response) => unknown)[] = [];
 	private errorCallbacks: ((value: Error) => unknown)[] = [];
 	private finallyCallbacks: (() => void)[] = [];
 	private data?: string | Buffer;
 
+	/**
+	 * @param url The target url for the request
+	 * @param options The request options
+	 * @param cb An optional callback for when the request is sent
+	 */
 	constructor(url: string | URL, options?: RequestOptions, cb?: ((res: IncomingMessage) => void) | undefined) {
 		super(createRequestArgs(url, options), res => {
 			res.on("data", data => {

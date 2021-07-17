@@ -106,3 +106,8 @@ req.setHeader("Accept", "text/html");
 const res = await req;
 console.log(res.data);
 ```
+
+## The Response Object
+The response object contains two properties; `message`, which is an instance of `IncomingMessage`, containing meta data for the response such as headers
+and the status code, and `data`, which is the response data. It also has the `json()` method, which automatically parses the data as json and returns
+it, if the data is in fact a string. This method will throw an error if the data is a string but not of valid json format; if the data is not a string it will simply return null.
