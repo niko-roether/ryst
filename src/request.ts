@@ -1,6 +1,7 @@
 import { ClientRequest as HttpClientRequest, ClientRequestArgs, IncomingMessage } from "http";
 import { globalAgent as httpsGlobalAgent } from "https";
 import { URL } from "url";
+import { VERSION } from "./constants";
 import Response from "./response";
 import { toURL } from "./utils";
 
@@ -51,7 +52,7 @@ export interface RequestOptions extends Pick<ClientRequestArgs, Exclude<keyof Cl
 	dataWriteCallback?: (err: Error | null | undefined) => void;
 }
 
-function createRequestArgs(url: string | URL, options?: RequestOptions): string | URL | ClientRequestArgs {
+function createRequestArgs(url: string | URL, options?: RequestOptions, defaultHeaders?: {[key: string]: string}): string | URL | ClientRequestArgs {
 	if(!options) return url;
 	url = toURL(url);
 	let args: ClientRequestArgs = {
@@ -64,8 +65,15 @@ function createRequestArgs(url: string | URL, options?: RequestOptions): string 
 		_defaultAgent: httpsGlobalAgent,
 	};
 	if(options) {
-		let {data, encoding, dataWriteCallback, ...applicableArgs} = options
-		args = {...args, ...applicableArgs};
+		let {data, encoding, dataWriteCallback, headers, ...other} = options
+		args = {
+			...args,
+			headers: {
+				...defaultHeaders,
+				...headers
+			},
+			...other
+		};
 	}
 	return args;
 }
@@ -77,13 +85,22 @@ class Request extends HttpClientRequest implements Promise<Response> {
 	private finallyCallbacks: (() => void)[] = [];
 	private data?: string | Buffer;
 
+	private static readonly STATIC_DEFAULT_HEADERS = {
+		"Accept": "*/*",
+		"Connection": "close",
+		"User-Agent": "ryst/" + VERSION
+	}
+
 	/**
 	 * @param url The target url for the request
 	 * @param options The request options
 	 * @param cb An optional callback for when the request is sent
 	 */
 	constructor(url: string | URL, options?: RequestOptions, cb?: ((res: IncomingMessage) => void) | undefined) {
-		super(createRequestArgs(url, options), res => {
+		super(createRequestArgs(url, options, {
+			...Request.STATIC_DEFAULT_HEADERS,
+			"Host": (typeof url == "string" ? new URL(url) : url).host
+		}), res => {
 			res.on("data", data => {
 				data = data.toString();
 				if(!this.data) this.data = data;
