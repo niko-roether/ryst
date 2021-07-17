@@ -17,7 +17,7 @@ of the `http.ClientRequest`-class from the `http` package.
 
 ### Request Options
 The `options` argument is very similar to the options that can be passed as the first parameter of `https.request()`;
-in fact, it contains all of it's properties, except the following, which can instead be encoded into a `URL`-object passed as the first parameter:
+in fact, it contains all of it's properties, **except** the following, which can instead be encoded into a `URL`-object passed as the first parameter:
 * *`host`*
 * *`hostname`*
 * *`path`*
