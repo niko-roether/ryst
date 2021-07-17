@@ -21,11 +21,13 @@ function head(url: string | URL, options?: RequestOptionsWithoutMethod, cb?: ((r
 	return new Request(url, {...options, method: "HEAD"}, cb);
 }
 
-export type { Request, Response, RequestOptions }
+export type { RequestOptions }
 
 export {
 	RequestAbortedError,
 	RequestTimeoutError,
+	Request,
+	Response,
 	request,
 	get,
 	post,
