@@ -1,9 +1,10 @@
-import { ClientRequest as HttpClientRequest, ClientRequestArgs, IncomingMessage } from "http";
+import { ClientRequest as HttpClientRequest, ClientRequestArgs, IncomingMessage, urlToHttpOptions } from "http";
 import { globalAgent as httpsGlobalAgent } from "https";
 import { URL } from "url";
 import { VERSION } from "./constants";
 import Response from "./response";
 import { toURL } from "./utils";
+
 
 /** An error that occurs when a request was aborted by the client. */
 class RequestAbortedError extends Error {
@@ -55,13 +56,9 @@ export interface RequestOptions extends Pick<ClientRequestArgs, Exclude<keyof Cl
 function createRequestArgs(url: string | URL, options?: RequestOptions, defaultHeaders?: {[key: string]: string}): string | URL | ClientRequestArgs {
 	if(!options) return url;
 	url = toURL(url);
+	
 	let args: ClientRequestArgs = {
-		host: url.host,
-		hostname: url.hostname,
-		path: url.pathname,
-		port: url.port,
-		protocol: url.protocol,
-		auth: url.username && url.password ? `${url.username}:${url.password}` : undefined,
+		...urlToHttpOptions(url),
 		_defaultAgent: httpsGlobalAgent,
 	};
 	if(options) {
