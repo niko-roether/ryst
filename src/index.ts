@@ -1,6 +1,7 @@
 import { IncomingMessage } from "http";
 import { URL } from "url";
 import Request, { RequestAbortedError, RequestOptions, RequestTimeoutError } from "./request";
+import Response from "./response";
 
 export type RequestOptionsWithoutMethod = Omit<RequestOptions, "method">;
 
@@ -20,7 +21,7 @@ function head(url: string | URL, options?: RequestOptionsWithoutMethod, cb?: ((r
 	return new Request(url, {...options, method: "HEAD"}, cb);
 }
 
-export type { RequestOptions }
+export type { Request, Response, RequestOptions }
 
 export {
 	RequestAbortedError,
