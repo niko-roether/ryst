@@ -1,6 +1,6 @@
 {
 	"name": "ryst",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"description": "A lightweight library for promise-based http requests with node.js",
 	"main": "dist/index.js",
 	"repository": "https://github.com/nicholas-roether/ryst.git",
