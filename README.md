@@ -18,13 +18,13 @@ of the `http.ClientRequest`-class from the `http` package.
 ### Request Options
 The `options` argument is very similar to the options that can be passed as the first parameter of `https.request()`;
 in fact, it contains all of it's properties, except the following, which can instead be encoded into a `URL`-object passed as the first parameter:
-* **`host`**
-* **`hostname`**
-* **`path`**
-* **`port`**
-* **`protocol`**
-* **`auth`**
-* 
+* *`host`*
+* *`hostname`*
+* *`path`*
+* *`port`*
+* *`protocol`*
+* *`auth`*
+
 In addition, it contains the following new properties:
 * **`data`**, which can be passed a string, a buffer, or an object that will be encoded as JSON; this will be sent as the request's content.
 * **`encoding`**, the text encoding of the message's content; by default utf-8.
