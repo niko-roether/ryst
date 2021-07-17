@@ -5,7 +5,7 @@ const req = ryst.get("https://www.google.com");
 
 const test = async () => {
 	const res = await req;
-	console.log(res.response.statusCode);
+	console.log(res.message.statusCode);
 }
 
 test();
