@@ -9,7 +9,7 @@ The most important and fundamental function in ryst is `request()`. As the name 
 By default, this will be a GET-Request.
 
 This method takes three arguments:
-* **`url`**, which can either be a `URL` instance
+* **`url`**, which can either be a `URL` instance or a string
 * **`options`**, which will be covered in more detail shortly
 * **`cb`**, a callback function which will be passed an `IncomingMessage` instance, just like in node's built-in package.
 The method will return a `ryst.Request`, whose properties will also be covered later, but which contains all properties
