@@ -1,4 +1,5 @@
-import { ClientRequest as HttpClientRequest, ClientRequestArgs, IncomingMessage, urlToHttpOptions } from "http";
+import { ClientRequest as HttpClientRequest, ClientRequestArgs, IncomingMessage } from "http";
+import { urlToHttpOptions } from "url";
 import { globalAgent as httpsGlobalAgent } from "https";
 import { URL } from "url";
 import { VERSION } from "./constants";

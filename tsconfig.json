@@ -5,6 +5,7 @@
 		"lib": [
 			"es7"
 		],
+		"types": ["node"],
 		"declaration": true,
 		"declarationMap": true,
 		"sourceMap": true,
